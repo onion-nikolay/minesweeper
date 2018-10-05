@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-
+from timeit import default_timer as timer
 
 STATUS_SYMB = {-3: '??', -2: '!!', -1: "xx", 0: ' 0', 1: ' 1', 2: ' 2',
                3: ' 3', 4: ' 4', 5: ' 5', 6: ' 6', 7: ' 7', 8: ' 8'}
@@ -52,6 +52,7 @@ def session():
     number_of_mines = int(raw_number_of_mines)
     showEmptyField(field_size, number_of_mines)
     print("Input 'x y' for first click.")
+    start = timer()
     raw_first_click = raw_input()
     first_click = [int(s)-1 for s in raw_first_click.split() if s.isdigit()]
     gm = game(field_size, number_of_mines, first_click)
@@ -71,9 +72,13 @@ def session():
                 except ValueError:
                     pass
             mask = (gm.status == -1)
+            print("Mines: {}/{}".format(np.sum(mask), number_of_mines))
             if ((mask == gm.field).min() and (np.sum(mask) == number_of_mines
                  ) and not((gm.status == -3).max())):
                 gm.inprocess = endOfGame(True)
+    time = timer() - start
+    print("Elapsed time: {}m{}s.\n".format(int(time/60),
+          int(time-60*int(time/60))))
     return 0
 
 
@@ -154,13 +159,10 @@ if __name__ == '__main__':
     __inprocessing = True
     while __inprocessing:
         session()
-        print("Try again? (y/n)")
+        print("Try again? (print 'y')")
         __answer = raw_input()
         if __answer == 'y':
             pass
-        elif __answer == 'n':
-            __inprocessing = False
-            print("Goodbye!")
         else:
             __inprocessing = False
-            print("Read as 'n'. Goodbye!")
+            print("Goodbye!")
