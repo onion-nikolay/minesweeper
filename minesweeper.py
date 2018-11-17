@@ -26,7 +26,7 @@ def endOfGame(win=False):
         print("End of game. You won!")
     else:
         print("End of game. You lost!")
-    raw_input()
+    input()
     return False
 
 
@@ -45,20 +45,20 @@ def generateField(field_size=[16, 16], number_of_mines=40,
 
 def session():
     print("Input size of field (example: 16 16)")
-    raw_field_size = raw_input()
+    raw_field_size = input()
     field_size = [int(s) for s in raw_field_size.split() if s.isdigit()]
     print("Input number of mines")
-    raw_number_of_mines = raw_input()
+    raw_number_of_mines = input()
     number_of_mines = int(raw_number_of_mines)
     showEmptyField(field_size, number_of_mines)
     print("Input 'x y' for first click.")
     start = timer()
-    raw_first_click = raw_input()
+    raw_first_click = input()
     first_click = [int(s)-1 for s in raw_first_click.split() if s.isdigit()]
     gm = game(field_size, number_of_mines, first_click)
     print("For click, print 'x y'. For mark, print 'mark x y'. Good luck!")
     while (gm.inprocess):
-        rawinput = raw_input()
+        rawinput = input()
         _input = rawinput.split()
         if _input != []:
             if _input[0] == 'mark':
@@ -73,8 +73,8 @@ def session():
                     pass
             mask = (gm.status == -1)
             print("Mines: {}/{}".format(np.sum(mask), number_of_mines))
-            if ((mask == gm.field).min() and (np.sum(mask) == number_of_mines
-                 ) and not((gm.status == -3).max())):
+            if ((mask == gm.field).min() and (np.sum(mask) == number_of_mines)
+                    and not((gm.status == -3).max())):
                 gm.inprocess = endOfGame(True)
     time = timer() - start
     print("Elapsed time: {}m{}s.\n".format(int(time/60),
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     while __inprocessing:
         session()
         print("Try again? (print 'y')")
-        __answer = raw_input()
+        __answer = input()
         if __answer == 'y':
             pass
         else:
